@@ -1,5 +1,8 @@
-import utils
+import graph
 
 if __name__ == '__main__':
-    tup = {'wsa': '12', 'dfag': 'bdsaf', 'caa': 'cac'}
-    utils.append_list(tup, 'test.json')
+    e = graph.Edge('new')
+    g = graph.Graph('test2')
+    g = graph.load_graph('testGraph')
+    g.add_edge(e)
+    print(g)
