@@ -1,36 +1,25 @@
 import utils
-import json
+RESPATH = '/resources'
+EDGEPATH = '/resources/edges.json'
 
 
-class BasicObject:
-    def __init__(self) -> None:
-        self.index = None
-        self.alais = None
-        self.attribute = None
+class Node:
+    def __init__(self, attr) -> None:
+        self.alias = None
+        self.attribute = attr
 
     def __str__(self) -> str:
-        return 'index: %s alais: %s' % (self.index, self.alais)
+        return 'alias: %s attribute: %s' % (self.alias, self.attribute)
 
-    def save(self, json_file_name) -> None:
-        utils.save_to_json(self, json_file_name)
-
-
-class BasicNode(BasicObject):
-    def __init__(self) -> None:
-        super().__init__()
-        self.description = None
-        self.manual = None
+    def save(self) -> None:
+        json_file_name = RESPATH + '/' + self.attribute + '_'
+        + self.alias + '.json'
+        utils.save_object(self, json_file_name)
 
 
-class BasicEdge(BasicObject):
-    def __init__(self) -> None:
+class Edge:
+    def __init__(self, attr) -> None:
+        self.attribute = attr
         self.src = None
         self.dest = None
-
-    def __str__(self) -> str:
-        return self.src + ' -> ' + self.dest
-
-    def saveToJSON(self, json_file_name):
-        node_json = json.dumps(self.__dict__)
-        with open(json_file_name, 'w') as f:
-            f.write(node_json)
+        self.condition = []
