@@ -2,6 +2,39 @@ import json
 import numpy as np
 
 
+def print_info(info) -> None:
+    print('\033[32m' + str(info) + '\033[0m')
+
+
+def print_exception(e) -> None:
+    print('\033[31m' + str(e) + '\033[0m')
+
+
+def append_list(item, json_file_name) -> None:
+    list = []
+    list.extend(json_file_name)
+    with open(json_file_name, 'w') as f:
+        list.append(item)
+        json.dump(list, f)
+
+
+def find_list(item, json_file_name) -> bool:
+    with open(json_file_name, 'r') as f:
+        try:
+            list = json.load(f)
+            if item in list:
+                return True
+        except Exception as e:
+            print_exception(e)
+    return False
+
+
+def read_from_json(file_path):
+    with open(file_path, "r", encoding='utf-8') as file:
+        data = json.load(file)
+    return data
+
+
 class NpEncoder(json.JSONEncoder):
 
     def default(self, obj):
@@ -30,30 +63,3 @@ def append_to_json(input, output_file):
                   ensure_ascii=False,
                   indent=4,
                   cls=NpEncoder)
-
-
-def split_sentences_from_file(file_path):
-    try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            content = file.read().replace("\n", "")
-            sentences = content.split("。")  # 使用句号分隔句子
-    except FileNotFoundError:
-        print("文件不存在或无法读取。")
-    sentences.pop()
-    if sentences:
-        for sentence in sentences:
-            sentence.strip()
-    else:
-        print("空句子。")
-    append_to_json(sentences, "sentences.json")
-
-
-def read_from_json(file_path):
-    with open(file_path, "r", encoding='utf-8') as file:
-        data = json.load(file)
-    return data
-
-
-if __name__ == "__main__":
-    file_path = "input.txt"  # 替换为实际的文件路径
-    result = split_sentences_from_file(file_path)
